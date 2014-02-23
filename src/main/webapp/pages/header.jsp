@@ -18,6 +18,10 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/js/bootstrap.min.js"></script>
 
+<!-- load angular -->
+<script src="${pageContext.request.contextPath}/angular-1.2.13/angular.js"></script> 
+<script src="${pageContext.request.contextPath}/js/app.js"></script>
+
 <script>
 
 $(document).ready(function(){
