@@ -105,13 +105,13 @@ public class GameController {
 	
 	@RequestMapping(value = {"/register"}, method = RequestMethod.POST)	
 	public ModelAndView postRegister(String first_name, String last_name, String t_and_c,
-			String email, String usernameF, String password, String password_confirmation, 
+			String email, String usernameF, String passwd, String password_confirmation, 
 			HttpServletResponse response, HttpServletRequest request, HttpSession session) 
 	{
 		
 		ModelAndView view = new ModelAndView("register");
 		
-		if(!password.equals(password_confirmation)){
+		if(!passwd.equals(password_confirmation)){
 			this.viewObjectsForRegisterForm(view, first_name, last_name, email, usernameF);			
 			view.addObject("msg", "Неуспешна потврда на лозинката.");
 		}
@@ -121,7 +121,7 @@ public class GameController {
 		}
 		else
 		{
-			boolean succesInsert = userService.insertUser(first_name, last_name, email, usernameF, password);
+			boolean succesInsert = userService.insertUser(first_name, last_name, email, usernameF, passwd);
 			if(succesInsert){		
 				view.addObject("msg", "Успешна регистрација.");
 			} 
