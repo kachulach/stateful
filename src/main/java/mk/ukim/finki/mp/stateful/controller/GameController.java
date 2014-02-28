@@ -1,5 +1,7 @@
 package mk.ukim.finki.mp.stateful.controller;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.Box.Filler;
 
+import mk.ukim.finki.mp.stateful.model.Game;
 import mk.ukim.finki.mp.stateful.service.ContactService;
 import mk.ukim.finki.mp.stateful.service.GameService;
 import mk.ukim.finki.mp.stateful.service.UserService;
@@ -79,7 +82,13 @@ public class GameController {
 	@RequestMapping(value = {"/changegame"}, method = RequestMethod.GET)	
 	public ModelAndView getChangeGame(HttpServletRequest request) {
 		
+		List<Game> games = this.gameService.listAllGames();
+		for (Game game : games) {
+			System.out.println(game.toString());
+		}		
+		
 		ModelAndView view = new ModelAndView("changegame");
+		view.addObject("games", games);
 		return view;
 	}
 	

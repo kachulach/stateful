@@ -1,6 +1,8 @@
 package mk.ukim.finki.mp.stateful.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 
 
@@ -45,6 +47,12 @@ public class GameDaoImpl implements GameDao {
 			q.setParameter("name", name);		
 		
 		return q.list().size()!=0;
+	}
+
+	@Override
+	public List<Game> allGames() {
+		List<Game> res = getCurrentSession().createCriteria(Game.class).list();
+		return res;		
 	}
 	
 	

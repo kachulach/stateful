@@ -37,4 +37,9 @@ public class GameServiceImpl implements GameService{
 		
 	}
 
+	@Override
+	public List<Game> listAllGames() {
+		return gameDao.allGames();
+	}
+
 }
