@@ -57,21 +57,32 @@
 							<div class="row">
 								<div class="col-md-6">
 									<h6>
-										Вкупно игри <span class="label label-info">size</span>
+										Вкупно игри <span class="label label-info">${size}</span>
 									</h6>
 								</div>
 								<div class="col-md-6">
 									<ul class="pagination pagination-sm pull-right">
-
-										<li><a href="">«</a></li>
-
-										<li class="active"><a href="javascript:void(0)">1<span
-												class="sr-only">(current)</span></a></li>
-
-										<!-- <li><a href="">1</a></li> -->
-
-										<!-- <li><a href="javascript:void(0)">»</a></li> -->
-										<li><a href="">»</a></li>
+										<c:if test="${current>1}">
+									      	<li><a href="${pageContext.request.contextPath}/game/changegame?page=${current-1}">«</a></li>
+									    </c:if>										
+										 
+										<c:forEach var="i" begin="1" end="${pages}">
+										
+										  <c:if test="${current==i}">
+									      	<li class="active"><a href="javascript:void(0)">${i}<span
+											class="sr-only">(current)</span></a></li>
+									      </c:if>
+									
+									      <c:if test="${current!=i}">
+									      	<li><a href="${pageContext.request.contextPath}/game/changegame?page=${i}">${ i }</a></li>
+									      </c:if>
+											
+										</c:forEach>
+										
+										<c:if test="${current<pages}">
+									      	<li><a href="${pageContext.request.contextPath}/game/changegame?page=${current+1}">»</a></li>
+									    </c:if>									
+										
 									</ul>
 								</div>
 							</div>

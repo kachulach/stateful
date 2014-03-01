@@ -13,6 +13,8 @@ public interface GameDao {
 	
 	public boolean gameExists(String name);
 	
-	public List<Game> allGames();
+	public List<Game> allGames(int at);
+	
+	public int allGamesSize();
 		
 }

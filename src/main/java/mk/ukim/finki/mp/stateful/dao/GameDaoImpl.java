@@ -6,9 +6,11 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
 import org.springframework.security.access.annotation.Secured;
@@ -50,11 +52,15 @@ public class GameDaoImpl implements GameDao {
 	}
 
 	@Override
-	public List<Game> allGames() {
-		List<Game> res = getCurrentSession().createCriteria(Game.class).list();
+	public List<Game> allGames(int at) {
+		List<Game> res = getCurrentSession().createQuery("FROM Game").setFirstResult(at).setMaxResults(5).list();
 		return res;		
 	}
-	
-	
+
+	@Override
+	public int allGamesSize() {
+		return getCurrentSession().createQuery("FROM Game").list().size();
+	}
+
 
 }

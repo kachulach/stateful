@@ -11,6 +11,7 @@ public interface GameService {
 	public boolean insertGame(String name, String description, String price, 
 							  String gameType, String picLocation);
 	
-	public List<Game> listAllGames();
+	public List<Game> listAllGames(int at);
 	
+	public int allGamesSize();
 }

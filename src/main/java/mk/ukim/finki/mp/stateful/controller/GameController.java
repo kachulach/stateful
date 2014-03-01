@@ -80,15 +80,25 @@ public class GameController {
 	}
 	
 	@RequestMapping(value = {"/changegame"}, method = RequestMethod.GET)	
-	public ModelAndView getChangeGame(HttpServletRequest request) {
+	public ModelAndView getChangeGame(HttpServletRequest request) {		
 		
-		List<Game> games = this.gameService.listAllGames();
-		for (Game game : games) {
-			System.out.println(game.toString());
-		}		
+		String query = request.getQueryString();
+				
+		List<Game> games = this.gameService.listAllGames(this.calcAtPaginaiton(query));
+				
+		int size = gameService.allGamesSize();
+		Double temp = (size-1)*1.0/5;
+		int pages = (int) Math.floor(temp);
+		int current = this.calcPage(query);
+		
+		System.out.println("current"+current);
 		
 		ModelAndView view = new ModelAndView("changegame");
 		view.addObject("games", games);
+		view.addObject("size", size);
+		view.addObject("pages", pages+1);
+		view.addObject("current", current);
+		
 		return view;
 	}
 	
@@ -210,6 +220,50 @@ public class GameController {
 		
 		return view;
 		
+	}
+	
+	/**
+	 * Calculates the order number for the first game on a page
+	 * so it can get 5 more games from that one -- for changegame
+	 * 
+	 * @param  query  the query string from the url (page param)
+	 * @return at     the order number of the game	 
+	 */
+	public int calcAtPaginaiton(String query){
+		
+		int page = 1;
+		if(query!=null){
+			String[] parts = query.split("=");
+			if(parts[0].equals("page") && Integer.parseInt(parts[1])>0) {
+				page = Integer.parseInt(parts[1]);
+				// if page attr is bigger than the actual number of pages
+				if(page > Math.ceil(gameService.allGamesSize()*1.0/5))
+					page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);
+			}			
+		}		
+				
+		int at = (page-1) * 5;
+		return at;
+	}
+	
+	/**
+	 * Calculates the current page -- for changegame
+	 * 
+	 * @param  query  the query string from the url (page param)
+	 * @return page   the current page
+	 */
+	public int calcPage(String query){
+		int page = 1;
+		if(query!=null){
+			String[] parts = query.split("=");
+			if(parts[0].equals("page") && Integer.parseInt(parts[1])>0) {
+				page = Integer.parseInt(parts[1]);
+				// if page attr is bigger than the actual number of pages
+				if(page > Math.ceil(gameService.allGamesSize()*1.0/5))
+					page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);
+			}			
+		}
+		return page;
 	}
 	
 }

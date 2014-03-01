@@ -38,8 +38,13 @@ public class GameServiceImpl implements GameService{
 	}
 
 	@Override
-	public List<Game> listAllGames() {
-		return gameDao.allGames();
+	public List<Game> listAllGames(int at) {
+		return gameDao.allGames(at);
+	}
+
+	@Override
+	public int allGamesSize() {
+		return gameDao.allGamesSize();
 	}
 
 }
