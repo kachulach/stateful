@@ -32,8 +32,7 @@ public class GameServiceImpl implements GameService{
 			String numBought = "0";
 			gameDao.insertGame(name, description, price, gameType, picLocation, numBought);	
 			return true;
-		}
-			
+		}			
 		
 	}
 
@@ -50,6 +49,17 @@ public class GameServiceImpl implements GameService{
 	@Override
 	public boolean deleteGame(String name) {
 		return gameDao.deleteGame(name);
+	}
+
+	@Override
+	public Game getGameByName(String name) {
+		return gameDao.getGameByName(name);
+	}
+
+	@Override
+	public void updateGame(String nameNew, String description, String price,
+			String gameType, String picLocation, Game temp) {
+		gameDao.updateGame(nameNew, description, price, gameType, picLocation, temp);
 	}
 
 }

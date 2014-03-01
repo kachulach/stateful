@@ -43,7 +43,7 @@
 											${ game.gameType } </label>
 
 										<div class="pull-right action-buttons">
-											<a href=""> 
+											<a href="${pageContext.request.contextPath}/game/changegame?change=${game.name}&page=${current}"> 
 											<span class="glyphicon glyphicon-pencil"></span></a>
 											<a href="${pageContext.request.contextPath}/game/deletegame?page=${current}&game=${game.name}" class="trash">
 											<span class="glyphicon glyphicon-trash"> </span></a>
@@ -91,9 +91,58 @@
 					</div>
 				</div>
 				<!-- /List -->
+				
+				<!-- Change game -->
+				<c:if test="${change!=null}">
+				<form style="width:40%; float:left; margin:15px;" method="post" action="${pageContext.request.contextPath}/game/changegame">
+					<!-- од upload на слика   class="fileinput fileinput-new" data-provides="fileinput" enctype="multipart/form-data"  -->
+					<h2>
+						Измена на игра<small> во база на податоци</small>
+					</h2>
 
+						<input type="text" name="nameOld" id="nameOld" value="${change.name}" hidden></input>
+						
+						<div class="form-group">
+							<input type="text" name="nameNew" id="nameNew" value="${change.name}"
+							class="form-control input-lg" placeholder="име" tabindex="1"
+							required></input>
+						</div>
 
+						<div class="form-group">
+							<textarea class="form-control input-lg" name="description"
+								id="description" rows="3" my="params" placeholder="опис"
+								tabindex="2" required>${ change.description }</textarea>
+						</div>
 
+						<div class="form-group">
+							<input type="text" name="price" id="price" value="${ change.price }"
+								class="form-control input-lg" placeholder="цена" tabindex="3"
+								required></input>
+						</div>
+
+						<div class="form-group">							
+							<input type="text" name="gameType" id="gameType" value="${change.gameType}"
+								class="form-control input-lg" placeholder="тип на игра"
+								tabindex="4" required></input>
+						</div>
+
+						<div class="form-group">
+							<input type="text" name="picLocation" id="picLocation" value="${change.picLocation}"
+								class="form-control input-lg" placeholder="локација на сликата"
+								tabindex="5" required></input>
+						</div>
+						
+						<hr class="colorgraph">
+							<div class="row">
+								<div class="col-xs-6 col-md-6">
+									<input type="submit" name="submit" value="Внеси"
+										class="btn btn-primary btn-block btn-lg" tabindex="6">
+								</div>
+							</div>
+				</form>
+				</c:if>
+
+				<!-- /Change game -->
 			</div>
 
 	    

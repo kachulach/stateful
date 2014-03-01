@@ -16,4 +16,9 @@ public interface GameService {
 	public int allGamesSize();
 	
 	public boolean deleteGame(String name);
+	
+	public Game getGameByName(String name);
+	
+	public void updateGame(String nameNew, String description,
+			String price, String gameType, String picLocation, Game temp);
 }

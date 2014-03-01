@@ -8,6 +8,8 @@ import java.util.List;
 
 
 
+
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -69,6 +71,30 @@ public class GameDaoImpl implements GameDao {
 	    q.setParameter("name", name);
 		if(q.executeUpdate()==1) return true;
 	    return false;	    
+	}
+
+	@Override
+	public Game getGameByName(String name) {
+		Query q = getCurrentSession().createQuery("SELECT g from Game g WHERE g.name=:name");
+		q.setParameter("name", name);
+	    
+	    if(q.list().size()==1){
+	    	return (Game) q.list().get(0);
+	    }
+	    return null;
+	}
+
+	@Override
+	public void updateGame(String nameNew, String description, String price,
+			String gameType, String picLocation, Game toUpdate) {
+		
+		toUpdate.setName(nameNew);
+		toUpdate.setDescription(description);
+		toUpdate.setPrice(price);
+		toUpdate.setGameType(gameType);
+		toUpdate.setPicLocation(picLocation);
+		getCurrentSession().update(toUpdate);
+		
 	}
 
 

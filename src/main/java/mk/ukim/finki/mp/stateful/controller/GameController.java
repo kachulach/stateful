@@ -95,7 +95,34 @@ public class GameController {
 		view.addObject("pages", pages+1);
 		view.addObject("current", current);
 		
+		String change = request.getParameter("change");		
+		
+		if(change!=null){
+			
+			Game g = gameService.getGameByName(change);			
+			view.addObject("change", g);
+			System.out.println("current "+current);
+			
+		}
+		
 		return view;
+	}
+	
+	@RequestMapping(value = {"/changegame"}, method = RequestMethod.POST)	
+	public String postChangeGame(String nameOld, String nameNew, String description, String price,
+			String gameType, String picLocation, 
+			HttpServletResponse response, HttpServletRequest request, HttpSession session) {			
+				
+		
+		Game temp = gameService.getGameByName(nameOld);
+		gameService.updateGame(nameNew, description, price, gameType, picLocation, temp);
+		
+		System.out.println("Current page:  ");
+		System.out.println(session.getAttribute("current"));
+		System.out.println(session.getAttributeNames());
+		
+		
+		return "redirect:changegame?change="+nameNew;
 	}
 	
 	@RequestMapping(value = {"/deletegame"}, method = RequestMethod.GET)	
@@ -109,6 +136,8 @@ public class GameController {
 		return "redirect:changegame?page="+page;
 		
 	}
+	
+	
 	
 	@RequestMapping(value = {"/gametype"}, method = RequestMethod.GET)	
 	public ModelAndView getGameType(HttpServletRequest request) {
