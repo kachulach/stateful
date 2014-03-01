@@ -47,4 +47,9 @@ public class GameServiceImpl implements GameService{
 		return gameDao.allGamesSize();
 	}
 
+	@Override
+	public boolean deleteGame(String name) {
+		return gameDao.deleteGame(name);
+	}
+
 }

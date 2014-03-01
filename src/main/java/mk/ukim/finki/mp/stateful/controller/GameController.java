@@ -80,18 +80,14 @@ public class GameController {
 	}
 	
 	@RequestMapping(value = {"/changegame"}, method = RequestMethod.GET)	
-	public ModelAndView getChangeGame(HttpServletRequest request) {		
-		
-		String query = request.getQueryString();
+	public ModelAndView getChangeGame(HttpServletRequest request) {			
 				
-		List<Game> games = this.gameService.listAllGames(this.calcAtPaginaiton(query));
+		List<Game> games = this.gameService.listAllGames(this.calcAtPaginaiton(request));
 				
 		int size = gameService.allGamesSize();
 		Double temp = (size-1)*1.0/5;
 		int pages = (int) Math.floor(temp);
-		int current = this.calcPage(query);
-		
-		System.out.println("current"+current);
+		int current = this.calcPage(request);
 		
 		ModelAndView view = new ModelAndView("changegame");
 		view.addObject("games", games);
@@ -100,6 +96,18 @@ public class GameController {
 		view.addObject("current", current);
 		
 		return view;
+	}
+	
+	@RequestMapping(value = {"/deletegame"}, method = RequestMethod.GET)	
+	public String getDeleteGame(HttpServletRequest request) {
+		
+		String page = request.getParameter("page");
+		String game = request.getParameter("game");		
+				
+		System.out.println("game deleted: " + gameService.deleteGame(game));
+		
+		return "redirect:changegame?page="+page;
+		
 	}
 	
 	@RequestMapping(value = {"/gametype"}, method = RequestMethod.GET)	
@@ -229,17 +237,15 @@ public class GameController {
 	 * @param  query  the query string from the url (page param)
 	 * @return at     the order number of the game	 
 	 */
-	public int calcAtPaginaiton(String query){
+	public int calcAtPaginaiton(HttpServletRequest request){
 		
 		int page = 1;
-		if(query!=null){
-			String[] parts = query.split("=");
-			if(parts[0].equals("page") && Integer.parseInt(parts[1])>0) {
-				page = Integer.parseInt(parts[1]);
+		
+		if(request.getParameter("page")!=null && Integer.parseInt(request.getParameter("page"))>0){			
+				page = Integer.parseInt(request.getParameter("page"));
 				// if page attr is bigger than the actual number of pages
 				if(page > Math.ceil(gameService.allGamesSize()*1.0/5))
-					page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);
-			}			
+					page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);						
 		}		
 				
 		int at = (page-1) * 5;
@@ -252,16 +258,13 @@ public class GameController {
 	 * @param  query  the query string from the url (page param)
 	 * @return page   the current page
 	 */
-	public int calcPage(String query){
+	public int calcPage(HttpServletRequest request){
 		int page = 1;
-		if(query!=null){
-			String[] parts = query.split("=");
-			if(parts[0].equals("page") && Integer.parseInt(parts[1])>0) {
-				page = Integer.parseInt(parts[1]);
+		if(request.getParameter("page")!=null && Integer.parseInt(request.getParameter("page"))>0){			
+			page = Integer.parseInt(request.getParameter("page"));
 				// if page attr is bigger than the actual number of pages
-				if(page > Math.ceil(gameService.allGamesSize()*1.0/5))
-					page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);
-			}			
+			if(page > Math.ceil(gameService.allGamesSize()*1.0/5))
+				page = (int) Math.ceil(gameService.allGamesSize()*1.0/5);						
 		}
 		return page;
 	}

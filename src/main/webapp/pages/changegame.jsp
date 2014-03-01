@@ -43,9 +43,10 @@
 											${ game.gameType } </label>
 
 										<div class="pull-right action-buttons">
-											<a href=""> <span class="glyphicon glyphicon-pencil">
-											</span></a> <a href="" class="trash"> <span
-												class="glyphicon glyphicon-trash"> </span></a>
+											<a href=""> 
+											<span class="glyphicon glyphicon-pencil"></span></a>
+											<a href="${pageContext.request.contextPath}/game/deletegame?page=${current}&game=${game.name}" class="trash">
+											<span class="glyphicon glyphicon-trash"> </span></a>
 										</div>
 									</div>
 								</li>

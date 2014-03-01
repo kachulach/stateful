@@ -7,6 +7,7 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -60,6 +61,14 @@ public class GameDaoImpl implements GameDao {
 	@Override
 	public int allGamesSize() {
 		return getCurrentSession().createQuery("FROM Game").list().size();
+	}
+
+	@Override
+	public boolean deleteGame(String name) {
+		Query q = getCurrentSession().createQuery("delete from Game where name=:name");
+	    q.setParameter("name", name);
+		if(q.executeUpdate()==1) return true;
+	    return false;	    
 	}
 
 

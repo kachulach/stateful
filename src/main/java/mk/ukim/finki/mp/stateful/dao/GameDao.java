@@ -16,5 +16,7 @@ public interface GameDao {
 	public List<Game> allGames(int at);
 	
 	public int allGamesSize();
+	
+	public boolean deleteGame(String name);
 		
 }

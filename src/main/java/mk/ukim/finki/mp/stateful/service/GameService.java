@@ -14,4 +14,6 @@ public interface GameService {
 	public List<Game> listAllGames(int at);
 	
 	public int allGamesSize();
+	
+	public boolean deleteGame(String name);
 }
