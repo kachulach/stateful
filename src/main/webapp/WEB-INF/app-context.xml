@@ -16,5 +16,9 @@
 	<mvc:resources mapping="/fonts/**" location="/fonts/" />
 	
 	<import resource="security-context.xml"/>
+	
+	<bean id="fileValidator" class="mk.ukim.finki.mp.stateful.validator.FileValidator" />  
+  
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
 
 </beans>

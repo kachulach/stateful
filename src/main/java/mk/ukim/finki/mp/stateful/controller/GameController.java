@@ -1,5 +1,10 @@
 package mk.ukim.finki.mp.stateful.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,16 +15,23 @@ import javax.servlet.http.HttpSession;
 import javax.swing.Box.Filler;
 
 import mk.ukim.finki.mp.stateful.model.Game;
+import mk.ukim.finki.mp.stateful.model.UploadedFile;
 import mk.ukim.finki.mp.stateful.service.ContactService;
 import mk.ukim.finki.mp.stateful.service.GameService;
 import mk.ukim.finki.mp.stateful.service.UserService;
+import mk.ukim.finki.mp.stateful.validator.FileValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -34,6 +46,60 @@ public class GameController {
 	
 	@Autowired
 	GameService gameService;
+	
+	@Autowired  
+	FileValidator fileValidator;
+	
+	@RequestMapping(value = {"/fileupload"}, method = RequestMethod.GET)	
+	public ModelAndView getUploadForm(  
+			   @ModelAttribute("uploadedFile") UploadedFile uploadedFile,  
+			   BindingResult result) {
+		
+		System.out.println("get fileupload");
+		return new ModelAndView("fileupload");  
+		
+	}
+	
+	
+	@RequestMapping(value = {"/fileupload"}, method = RequestMethod.POST)	
+	public ModelAndView fileUploaded(
+			@ModelAttribute("uploadedFile") UploadedFile uploadedFile,
+			BindingResult result, HttpSession session) {
+		
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+
+		MultipartFile file = uploadedFile.getFile();
+		fileValidator.validate(uploadedFile, result);
+
+		String fileName = file.getOriginalFilename();
+
+		if (result.hasErrors()) {
+			System.out.println("result has errors");
+			return new ModelAndView("fileupload");
+		}
+
+		try {
+			inputStream = file.getInputStream();
+			
+			File newFile = new File("C:\\Users\\dell\\Desktop\\upload\\" + fileName);
+			if (!newFile.exists()) {
+				newFile.createNewFile();				
+			}
+			outputStream = new FileOutputStream(newFile);
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("showFile", "message", fileName);
+	}
 	
 	@RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)	
 	public ModelAndView getWelcome(HttpServletRequest request, HttpSession session) {

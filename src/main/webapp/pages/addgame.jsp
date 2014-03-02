@@ -35,7 +35,7 @@
 				<hr class="colorgraph">
 				<div class="form-group">
 					<input type="text" name="name" id="name" class="form-control input-lg" 
-					placeholder="име" tabindex="1" required>		            
+					placeholder="име" tabindex="1" required></input>		            
 				</div>
 				
 				<div class="form-group">
